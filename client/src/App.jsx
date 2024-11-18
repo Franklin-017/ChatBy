@@ -1,10 +1,14 @@
 import './App.css'
+import { RouterProvider } from 'react-router-dom'
+import router from './router'
+import { Toaster } from 'sonner'
 
 function App() {
 
   return (
-    <>
-      <h1>React application</h1>
+    <> 
+       <RouterProvider router={ router } future={{ v7_startTransition: true }} />
+       <Toaster closeButton />
     </>
   )
 }

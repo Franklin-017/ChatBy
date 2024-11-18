@@ -8,19 +8,63 @@ import {
 import Victory from "@/assets/victory.svg";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { apiClient } from "@/lib/api-client";
+import { LOGIN_ROUTE, SIGNUP_ROUTE } from "@/utils/constants";
 
 const Auth = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 
-	const handleLogin = async () => {};
-	const handleSignup = async () => {};
+
+	const validateSignup = () => {
+		if (!email.length) {
+			toast.error("Email is required.");
+			return false;
+		}
+		if (!password.length) {
+			toast.error("Password is required.");
+			return false;
+		}
+		if (password !== confirmPassword) {
+			toast.error("Password and confirm password should be same.");
+			return false;
+		}
+		return true;
+	};
+
+	const validateLogin = () => {
+		if (!email.length) {
+			toast.error("Email is required.");
+			return false;
+		}
+		if (!password.length) {
+			toast.error("Password is required.");
+			return false;
+		}
+		return true;
+	}
+
+	const handleLogin = async () => {
+		if(validateLogin()) {
+			console.log(email, password)
+			const response = await apiClient.post(LOGIN_ROUTE, { email, password }, { withCredentials: true });
+			console.log(response)
+		}
+	};
+
+	const handleSignup = async () => {
+		if(validateSignup()) {
+			const response = await apiClient.post(SIGNUP_ROUTE, { email, password }, { withCredentials: true });
+			console.log(response)
+		}
+	};
 
 	return (
 		<div className="w-[100vw] min-h-[100vh] flex items-center justify-center">
 			<div className="h-[80vh] bg-white border-2 border-white text-opacity-90 shadow-2xl w-[80vw] md:w-[90vw] lg:w-[70vw] xl:w-[60vw] rounded-3xl">
-				<div className="flex items-center justify-center flex-col mt-[20%]">
+				<div className="flex items-center justify-center flex-col mt-[15%]">
 					<div className="flex items-center justify-center">
 						<h1 className="text-5xl font-bold md:text-6xl">Welcome</h1>
 						<img src={Victory} alt="Victory Emoji" className="h-[5.25rem]" />
